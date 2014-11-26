@@ -1,0 +1,47 @@
+@main("Admin","admin") {
+
+<h1>Manage posts</h1>
+
+<p><a href="admin_edit.html" class="btn btn-primary">Add a new post</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Publication date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>3</td>
+            <td>The Route of All Evil</td>
+            <td>09/24/2013 10:00</td>
+            <td>Category #1</td>
+            <td>
+                <a href="admin_edit.html" class="btn btn-primary">Edit</a>
+                <a href="admin_index.html" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>The Route of All Evil</td>
+            <td>09/24/2013 09:00</td>
+            <td>Category #1</td>
+            <td>
+                <a href="admin_edit.html" class="btn btn-primary">Edit</a>
+                <a href="admin_index.html" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="pagination">
+    <li class="prev"><a href="#" rel="prev">Previous</a></li>
+    <li><a href="#">1</a></li>
+    <li class="active"><a>2</a></li>
+    <li class="disabled"><a>Next</a></li>
+</ul>
+}

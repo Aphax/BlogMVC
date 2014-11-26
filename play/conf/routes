@@ -1,0 +1,24 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Forcer la valeur d'un paramètre
+# GET     /                           controllers.Application.index(page = "home")
+
+# Valeur par défaut d'un paramètre
+# GET     /                           controllers.Application.index(page ?= "home")
+
+# paramètre optionnel
+# GET     /                           controllers.Application.index(page ?= null)
+
+# Home page
+GET     /                           controllers.Application.index()
+GET     /login                      controllers.Application.login()
+GET     /admin                      controllers.Application.admin()
+GET     /:slug                      controllers.Application.post(slug: String)
+GET     /category/:slug             controllers.Application.category(slug: String)
+GET     /author/:author             controllers.Application.author(author: String)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
