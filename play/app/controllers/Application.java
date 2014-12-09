@@ -1,10 +1,16 @@
 package controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import play.*;
+import play.api.Logger;
 import play.mvc.*;
+import play.mvc.Http.Request;
+import play.mvc.Http.RequestBody;
 import play.db.jpa.*;
+
 import models.*;
 import views.html.*;
 
@@ -16,6 +22,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import org.pegdown.PegDownProcessor;
 
 public class Application extends Controller {
 
@@ -24,28 +31,18 @@ public class Application extends Controller {
     }
 
     @Transactional
-    public static Result author(String author) {
-        TypedQuery<Users> query = JPA.em().createQuery("select u from Users u WHERE u.username=:author", Users.class)
-            .setParameter("author",author)
-            .setMaxResults(1);
-        Users user = query.getSingleResult();
-        return ok(views.html.posts.render(user.posts));
-    }
+    public static Result listPosts() {
+        Http.Request request = request();
+        String page = request.getQueryString("page");
 
-    @Transactional
-    public static Result category(String slug) {
-        TypedQuery<Categories> query = JPA.em().createQuery("select c from Categories c WHERE c.slug=:slug", Categories.class);
-        query.setParameter("slug",slug);
-        query.setMaxResults(1);
-        Categories category = query.getSingleResult();
-        return ok(views.html.posts.render(category.posts));
-    }
+        if (page == null) {
+            page = "1";
+        }
 
-    @Transactional
-    public static Result index() {
-        Query query = JPA.em().createQuery("select p from Posts p");
-        List<Posts> posts = query.getResultList();
-        return ok(views.html.posts.render(posts));
+        Configuration configuration = Play.application().configuration();
+        Integer pagination = configuration.getInt("pagination");
+        List<Posts> posts = Posts.getByPage(Integer.parseInt(page),pagination);
+        return ok(views.html.posts.render(posts, Categories.findAll()));
     }
 
     public static Result login() {
@@ -91,6 +88,14 @@ public class Application extends Controller {
         // q.setParameter("slug",slug);
         // q.setMaxResults(1);
 
-        return ok(views.html.post.render(q.getSingleResult()));
+        Posts post = q.getSingleResult();
+        PegDownProcessor proc = new PegDownProcessor();
+        post.content = proc.markdownToHtml(post.content);
+
+        try {
+            return ok(views.html.post.render(post, Categories.findAll()));
+        } catch(NoResultException e) {
+            return badRequest();
+        }
     }
 }

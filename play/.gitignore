@@ -13,4 +13,7 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-/.ensime
+*.ensime
+*.ensime_session
+*.sublime-project
+*.sublime-workspace

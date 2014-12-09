@@ -12,12 +12,14 @@
 # GET     /                           controllers.Application.index(page ?= null)
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           controllers.Application.listPosts()
+GET     /form                       controllers.Tests.form()
+POST    /form                       controllers.Tests.postForm()
+GET     /:slug                      controllers.Application.post(slug: String)
+#GET     /category/:slug             controllers.Application.listPosts(category: Categories)
+#GET     /author/:author             controllers.Application.listPosts(author: Author)
 GET     /login                      controllers.Application.login()
 GET     /admin                      controllers.Application.admin()
-GET     /:slug                      controllers.Application.post(slug: String)
-GET     /category/:slug             controllers.Application.category(slug: String)
-GET     /author/:author             controllers.Application.author(author: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

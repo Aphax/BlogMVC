@@ -1,4 +1,4 @@
-@(posts: List[models.Posts])
+@(posts: List[models.Posts], categoriesList: List[models.Categories])
 
 @main(title = "Play Index") {
 
@@ -14,8 +14,8 @@
             <article>
                 <h2><a href="@routes.Application.post(post.slug)">@post.name</a></h2>
                 <p><small>
-                    Category : <a href="@routes.Application.category(post.category.slug)">@post.category.name</a>,
-                    by <a href="@routes.Application.author(post.user.username)">@post.user.username</a> on <em>@post.getCreated()</em>
+                    Category : <a href="@routes.Application.listPosts()">@post.category.name</a>,
+                    by <a href="@routes.Application.listPosts()">@post.user.username</a> on <em>@post.getCreated()</em>
                 </small></p>
                 <p>@post.getResume(300)</p>
                 <p class="text-right"><a href="@routes.Application.post(post.slug)" class="btn btn-primary">Read more...</a></p>
@@ -25,13 +25,7 @@
             <hr>
 
             <ul class="pagination">
-                <li><a href="index.html">&laquo;</a></li>
-                <li><a href="index.html">1</a></li>
-                <li><a href="index.html">2</a></li>
-                <li><a href="index.html">3</a></li>
-                <li><a href="index.html">4</a></li>
-                <li><a href="index.html">5</a></li>
-                <li><a href="index.html">&raquo;</a></li>
+                @pagination()
             </ul>
         </div>
 
@@ -39,22 +33,7 @@
 
             <h4>Categories</h4>
             <div class="list-group">
-                <a href="category.html" class="list-group-item">
-                    <span class="badge">14</span>
-                    Category #1
-                </a>
-                <a href="category.html" class="list-group-item">
-                    <span class="badge">5</span>
-                    Category #2
-                </a>
-                <a href="category.html" class="list-group-item">
-                    <span class="badge">1</span>
-                    Category #3
-                </a>
-                <a href="category.html" class="list-group-item">
-                    <span class="badge">7</span>
-                    Category #4
-                </a>
+                @categories(categoriesList)
             </div>
 
             <h4>Last posts</h4>
