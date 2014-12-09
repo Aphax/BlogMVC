@@ -1,23 +1,16 @@
 package controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import play.*;
-import play.api.Logger;
 import play.mvc.*;
-import play.mvc.Http.Request;
-import play.mvc.Http.RequestBody;
 import play.db.jpa.*;
 
 import models.*;
-import views.html.*;
 
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -41,7 +34,22 @@ public class Application extends Controller {
 
         Configuration configuration = Play.application().configuration();
         Integer pagination = configuration.getInt("pagination");
-        List<Posts> posts = Posts.getByPage(Integer.parseInt(page),pagination);
+        List<Posts> posts = Posts.getByPage(Integer.valueOf(page),pagination);
+        return ok(views.html.posts.render(posts, Categories.findAll()));
+    }
+
+    @Transactional
+    public static Result listPostsByCategory(String slug) {
+        Http.Request request = request();
+        String page = request.getQueryString("page");
+
+        if (page == null) {
+            page = "1";
+        }
+
+        Configuration configuration = Play.application().configuration();
+        Integer pagination = configuration.getInt("pagination");
+        List<Posts> posts = Posts.paginateBy("Categories", slug, Integer.valueOf(page), pagination);
         return ok(views.html.posts.render(posts, Categories.findAll()));
     }
 

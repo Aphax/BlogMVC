@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -28,7 +26,8 @@ public class Categories {
 
     @Transient()
     public Long count;
-
+    
+    @SuppressWarnings("unchecked")
     public static List<Categories> findAll() {
         List<Object[]> rows = JPA.em().createQuery("select c, COUNT(p) from Categories c join c.posts p GROUP BY c").getResultList();
         List<Categories> categories = new ArrayList<Categories>();

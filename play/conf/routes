@@ -13,10 +13,8 @@
 
 # Home page
 GET     /                           controllers.Application.listPosts()
-GET     /form                       controllers.Tests.form()
-POST    /form                       controllers.Tests.postForm()
+GET     /category/:slug             controllers.Application.listPostsByCategory(slug: String)
 GET     /:slug                      controllers.Application.post(slug: String)
-#GET     /category/:slug             controllers.Application.listPosts(category: Categories)
 #GET     /author/:author             controllers.Application.listPosts(author: Author)
 GET     /login                      controllers.Application.login()
 GET     /admin                      controllers.Application.admin()
